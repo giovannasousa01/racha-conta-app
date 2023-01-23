@@ -4,7 +4,6 @@ class CustomSliderWidget extends StatelessWidget {
   const CustomSliderWidget({super.key, required this.child});
 
   final Widget child;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,9 @@ class CustomSliderWidget extends StatelessWidget {
         valueIndicatorColor: const Color(0xff24465e),
         valueIndicatorTextStyle: const TextStyle(
           color: Colors.white,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.bold,
         ),
-
       ),
       child: child,
     );

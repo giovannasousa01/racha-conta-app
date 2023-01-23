@@ -92,19 +92,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                top: 20.0,
-                bottom: 10.0,
-                left: 20.0,
-                right: 20.0,
-              ),
-              child: Divider(
-                thickness: 2.0,
-                color: const Color(0xff24465e).withOpacity(0.5),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 10.0,
+                top: 40.0,
                 bottom: 10.0,
                 left: 10.0,
                 right: 10.0,
@@ -149,8 +137,10 @@ class _HomePageState extends State<HomePage> {
                         )),
                   ),
                   Container(
+                    width: 50,
                     alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(bottom: 10.0, right: 10.0),
+                    padding:
+                        const EdgeInsets.only(bottom: 10.0),
                     child: Text(
                       '${valorSlider.round()}%',
                       style: const TextStyle(
