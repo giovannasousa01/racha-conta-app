@@ -27,10 +27,15 @@ flutter:
   assets:
     - assets/images/wallet.png
 
-  fonts: 
+  fonts:
     - family: Montserrat
-      fonts:
-        - asset: assets/fonts/Monteserrat-Regular.ttf
+      fonts: 
+        - asset: assets/fonts/montserrat.ttf
+
+  # fonts: 
+  #   - family: Montserrat
+  #     fonts:
+  #       - asset: assets/fonts/monteserrat.ttf
 
 
   # fonts:
