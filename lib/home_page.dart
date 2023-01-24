@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:racha_conta_app/widgets/custom_app_bar_widget.dart';
 import 'package:racha_conta_app/widgets/custom_slider_widget.dart';
+import 'package:racha_conta_app/widgets/custom_text_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,8 +13,69 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController contaController = TextEditingController();
   TextEditingController qtdPessoasController = TextEditingController();
-  double val = 0.0;
+
+  double taxa = 0.0;
   double valorSlider = 0.0;
+
+  late double totalConta = 0, totalPagar = 0, comissao;
+  late int qtdPessoas;
+
+  void calcularConta() {
+    totalConta = double.parse(contaController.text);
+    qtdPessoas = int.parse(qtdPessoasController.text);
+    comissao = (taxa + totalConta) / 100;
+
+    totalPagar = (totalConta + comissao) / qtdPessoas;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const CustomTextWidget(
+          text: 'TOTAL',
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'assets/images/sorriso.png',
+              height: 100,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            CustomTextWidget(text: 'Total da conta: R\$ $totalConta'),
+            //Text('Total da conta: R\$ $totalConta'),
+            const Divider(
+              indent: 10.0,
+              endIndent: 10.0,
+              height: 30,
+            ),
+            CustomTextWidget(text: 'Taxa do Garçom: R\$ $comissao'),
+            const Divider(
+              indent: 10.0,
+              endIndent: 10.0,
+              height: 30,
+            ),
+            CustomTextWidget(text: 'Total por Pessoa: R\$ $totalPagar'),
+            const Divider(
+              indent: 10.0,
+              endIndent: 10.0,
+              height: 30,
+            ),
+          ],
+        ),
+        actions: [
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+                shape: const StadiumBorder(),
+                side: const BorderSide(color: Color(0xff24465E))),
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Okay'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +131,6 @@ class _HomePageState extends State<HomePage> {
                       margin: const EdgeInsets.only(left: 10.0, right: 10.0),
                       width: MediaQuery.of(context).size.width,
                       height: 30.0,
-                      //color: Colors.blueGrey,
                       child: TextFormField(
                         controller: contaController,
                         style: const TextStyle(
@@ -98,11 +159,9 @@ class _HomePageState extends State<HomePage> {
                 right: 10.0,
               ),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
-                    alignment: Alignment.centerRight,
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: const Text(
                       'Taxa de Serviço',
@@ -117,30 +176,31 @@ class _HomePageState extends State<HomePage> {
                   Flexible(
                     fit: FlexFit.loose,
                     child: Container(
-                        margin: const EdgeInsets.only(bottom: 10.0),
-                        width: MediaQuery.of(context).size.width,
-                        height: 30.0,
-                        child: CustomSliderWidget(
-                          child: Slider(
-                            min: 0,
-                            max: 100,
-                            divisions: 20,
-                            value: val,
-                            label: val.round().toString(),
-                            onChanged: (value) {
-                              setState(() {
-                                val = value;
-                                valorSlider = value;
-                              });
-                            },
-                          ),
-                        )),
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(bottom: 10.0),
+                      width: MediaQuery.of(context).size.width,
+                      height: 30.0,
+                      child: CustomSliderWidget(
+                        child: Slider(
+                          min: 0,
+                          max: 100,
+                          divisions: 20,
+                          value: taxa,
+                          label: taxa.round().toString(),
+                          onChanged: (value) {
+                            setState(() {
+                              taxa = value;
+                              valorSlider = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                   Container(
-                    width: 50,
+                    width: 45,
                     alignment: Alignment.centerRight,
-                    padding:
-                        const EdgeInsets.only(bottom: 10.0),
+                    padding: const EdgeInsets.only(bottom: 10.0),
                     child: Text(
                       '${valorSlider.round()}%',
                       style: const TextStyle(
@@ -219,7 +279,9 @@ class _HomePageState extends State<HomePage> {
                     side: BorderSide.none,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  calcularConta();
+                },
                 child: const Text(
                   'Calcular',
                   style: TextStyle(
